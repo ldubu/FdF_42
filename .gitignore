@@ -1,0 +1,11 @@
+#executable
+a.out
+fdf
+libft.a
+
+#objets
+*.o
+objs/
+
+#fichier 
+minilibx-linux
