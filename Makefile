@@ -1,4 +1,4 @@
-MAKEFLAGS = --silent
+#MAKEFLAGS = --silent
 
 CC = 		gcc
 
@@ -24,32 +24,31 @@ _CYAN=	$'\033[36m
 _WHITE=	$'\033[37m
 _END= 	$'\033[37m
 SRC =	main.c
+#srcs/draw_a_line.c
 
 OBJ = $(addprefix $(OBJS_PATH), $(SRC:.c=.o))
 
 $(OBJS_PATH)%.o: %.c $(HEADER)
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(IFLAGS)  libft.a minilibx-linux/libmlx_Linux.a -lXext -lX11 -c $< -o $@
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 	@printf "%-15s ${_YELLOW}${_BOLD}$<${_END}...\n" "Compiling"			
 
 $(NAME): 	$(OBJ) $(HEADER) libft
 	@printf "%-15s ${_PURPLE}${_BOLD}${NAME}${_END}...\n" "Compiling"
-	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJ) libft.a minilibx-linux/libmlx_Linux.a -lXext -lX11 -o ${NAME}
+	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJ) libft.a minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm -o ${NAME}
 	@printf "\n${_GREEN}${_BOLD}[Fdf OK]${_END}\n"
 	
 all: $(NAME)
 
 libft:
-	make -C libft_42/
-	cp ./libft_42/libft.a ./
+	@make -C libft_42/
+	@cp ./libft_42/libft.a ./
 
 clean:
-	$(RM) $(OBJ)
-	@make clean -C ft_printf_42/
+	@$(RM) $(OBJ)
 
 fclean:		clean
-	$(RM) $(NAME) $(OBJS_PATH) libftprintf.a
-	@make fclean -C ft_printf_42/
+	@$(RM) $(NAME) $(OBJS_PATH) libf.a
 
 re: 	fclean all
 

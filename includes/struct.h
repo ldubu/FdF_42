@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:02:36 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/02/17 16:35:58 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/02/25 16:41:22 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,15 @@ typedef struct s_segment
 	int	xb;
 	int	ya;
 	int	yb;
+	int color;
 }		t_segment;
+
+typedef struct s_data_tab
+{
+	int **tab;
+	int x_max;
+	int	y_max;
+}		t_tab;
 
 
 #endif
