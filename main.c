@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:14:43 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/03 12:15:45 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:26:51 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,37 +26,35 @@ int	main(int argc, char **argv)
 	if (fd == -1)
 		return (1);
 	line = __get_next_line(fd);
-	//printf("malloc gnl line %p\n", line);
-	lines = (int **) malloc(sizeof(int *));
-	//printf("malloc lines %p\n", lines);
+	lines = (int **) malloc(sizeof(int *) * 1);
 	lines[0] = __chartoint(__split(line, ' '), &tab);
 	size = 1;
 	while (line != NULL)
 	{
-		printf("the first one\n");
 		free(line);
 		line = __get_next_line(fd);
-		//printf("malloc gnl line %p\n", line);
-		lines = __tabjoin(lines, __split(line, ' '), size, &tab);
-		size ++;
-	}
-/*	int x = 0;
+		if (line != NULL)
+			lines = __tabjoin(lines, __split(line, ' '), size++, &tab);
+	}	
+	close(fd);
+	return (0);
+}
+
+/*int x = 0;
 	int y;
 	while (lines[x] != NULL)
 	{
 		y = 0;
 		while (y < tab.x_max)
 		{
-			//printf("%d ", lines[x][y]);
+			printf("%2d ", lines[x][y]);
 			y++;
 		}
-		//printf("\n");
+		printf("\n");
+		free(lines[x]);
 		x++;
 	}
-	close(fd);
-	return (0);*/
-}
-
+	free(lines);*/
 int	*__chartoint(char **split, t_tab *tab)
 {
 	int	i;
@@ -66,7 +64,6 @@ int	*__chartoint(char **split, t_tab *tab)
 	while (split[i] != NULL)
 		i++;
 	line = (int *) malloc (sizeof(int) * i);
-	//printf("malloc line %p\n", line);
 	i = 0;
 	while (split[i] != NULL)
 	{
@@ -76,12 +73,10 @@ int	*__chartoint(char **split, t_tab *tab)
 	i = 0;
 	while (split[i] != NULL)
 	{
-		printf("and these one %s %d?\n", split[i], line[i]);
-		printf("%d\n", i);
 		free(split[i]);
 		i ++;
 	}
-	printf("no these one\n");
+	free(split[i]);
 	free(split);
 	tab->x_max = i;
 	tab->y_max = tab->y_max + 1;
@@ -96,13 +91,12 @@ int	**__tabjoin(int **lines, char **split, int size, t_tab *tab)
 	if (split == NULL)
 		return (lines);
 	i = 0;
-	new = (int **) malloc(sizeof(int *) * size + 2);
+	new = (int **) malloc(sizeof(int *) * (size + 2));
 	while (i < size)
 	{
 		new[i] = lines[i];
 		i++;
 	}
-	printf("these one\n");
 	free(lines);
 	new[i] = __chartoint(split, tab);
 	new[i + 1] = NULL;

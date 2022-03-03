@@ -2,7 +2,8 @@
 
 CC = 		gcc
 
-CFLAGS =	-Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra $(FSAN)
+FSAN = -fsanitize=address
 
 IFLAGS = 	-I includes -I libft_42/includes -I minilibx-linux
 
@@ -23,8 +24,9 @@ _PURPLE=$'\033[35m
 _CYAN=	$'\033[36m
 _WHITE=	$'\033[37m
 _END= 	$'\033[37m
-SRC =	main.c
-#srcs/draw_a_line.c
+SRC =	main.c \
+		srcs/draw_a_line.c \
+		graphical.c
 
 OBJ = $(addprefix $(OBJS_PATH), $(SRC:.c=.o))
 
