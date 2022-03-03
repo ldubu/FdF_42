@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:07:22 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/02/25 16:01:38 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/03 10:32:37 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,7 @@ void	__down_y(t_segment *seg, t_img *img);
 void	__up_x(t_segment *seg, t_img *img);
 void	__up_y(t_segment *seg, t_img *img);
 void	__init_seg(int xa, int xb, int ya, int yb);
+int		*__chartoint(char **split, t_tab *tab);
+int		**__tabjoin(int **lines, char **split, int size, t_tab *tab);
 
 #endif
