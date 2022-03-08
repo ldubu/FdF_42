@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:54:18 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/03 17:03:34 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/08 15:00:04 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,109 @@
 #include <math.h>
 //;
 
-int	__draw(t_tab *tab, int **coordonees, int size)
+int	__draw(t_tab *tab)
 {
 	t_mlx	info;
 	t_img	img;
-	t_point	a;
-	t_point b;
 
 	__init_window(&info, &img);
-	//creer une fonction qui prend coordo, size et tab? et qui modifie l'image
-	//initier a, b et appeler draw dans cette fonction
-	__draw_a_line(&a, &b, &img);
+	/*t_point a;
+	t_point b;
+	t_point c;
+	t_point d;
+	t_point e;
+	t_point f;
+	t_point g;
+	t_point h;
+
+	a.x = 500;
+	a.y = 250;
+	b.x = 550;
+	b.y = 200;
+	c.x = 650;
+	c.y = 200;
+	d.x = 700;
+	d.y = 250;
+	e.x = 700;
+	e.y = 350;
+	f.x = 650;
+	f.y = 400;
+	g.x = 550;
+	g.y = 400;
+	h.x = 500;
+	h.y = 350;
+
+	b.color = 0x000FF00;
+	g.color = 0x00000FF;
+	h.color = 0x0FFFF00;
+
+	__draw_a_line(&a, &e, &img);
+	//__draw_a_line(&e, &a, &img);
+	__draw_a_line(&b, &f, &img);
+	//__draw_a_line(&f, &b, &img);
+	//__draw_a_line(&c, &g, &img);
+	__draw_a_line(&g, &c, &img);
+	//__draw_a_line(&d, &h, &img);
+	__draw_a_line(&h, &d, &img);
+	
+	tab->x_max = 0;
+	__my_mlx_pixel_put(&img, 600, 300, 0x0FF0000);
+	__my_mlx_pixel_put(&img, 650, 200, 0x0FF0000);
+	__my_mlx_pixel_put(&img, 550, 400, 0x0FF0000);*/
+	__write_img(tab, &img, &info);
 	mlx_put_image_to_window(info.mlx_ptr, info.win_ptr, info.img_ptr, 0, 0);
 	mlx_loop(info.mlx_ptr);
 	return (0);
 }
 
+void	__write_img(t_tab *tab, t_img *img, t_mlx *info)
+{
+	int		y;
+	int		x;
+	t_point	a;
+	t_point	b;
+
+	y = 0;
+	while (y < tab->y_max)
+	{
+		x = 0;
+		while (x < tab->x_max)
+		{
+			a.z = tab->coordonnees[y][x];
+			__calculate_xy(&a, x, y, info);
+			if (x < tab->x_max - 1)
+			{
+				b.z = tab->coordonnees[y][x + 1];
+				__calculate_xy(&b, x + 1, y, info);
+				__draw_a_line(&a, &b, img);
+			}
+			if (y < tab->y_max - 1)
+			{
+				b.z = tab->coordonnees[y + 1][x];
+				__calculate_xy(&a, x, y, info);
+				__calculate_xy(&b, x, y + 1, info);
+				__draw_a_line(&a, &b, img);
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+void	__calculate_xy(t_point *point, int x, int y, t_mlx *info)
+{
+	point->color = 0x0FFFFFF;
+	point->x = (((x * info->scale) - (y * info->scale)) * cos(info->angle)) \
+	+ info->shift_x;
+	point->y = ((((x * info->scale) + (y * info->scale)) \
+	* sin(info->angle)) - point->z * info->z_scale) + info->shift_y;
+}
+
 int	__init_window(t_mlx *info, t_img *img)
 {
 	info->angle = 0.523599;
-	info->scale = 20;
+	info->scale = 30;
+	info->z_scale = 1;
 	info->win_x = 2000;
 	info->win_y = 1000;
 	info->shift_x = info->win_x / 3;

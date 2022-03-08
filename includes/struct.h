@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:02:36 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/03 16:57:28 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/08 14:04:22 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_data_mlx
 	void	*img_ptr;
 	t_img	*img;
 	int		scale;
+	int		z_scale;
 	int		win_x;
 	int		win_y;
 	int		shift_x;
@@ -45,9 +46,11 @@ typedef struct s_point
 
 typedef struct s_data_tab //peut etre inutile
 {
-	int	**tab;
+	int	**coordonnees;
 	int	x_max;
 	int	y_max;
+	int z_max;
+	int z_min;
 }		t_tab;
 
 #endif

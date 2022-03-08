@@ -6,11 +6,12 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:42:54 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/03 16:55:32 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/08 12:29:36 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+//printf("xa = %d, ya = %d, xb = %d, yb = %d\n", a->x, a->y, b->x, b->y);
 
 void	__draw_a_line(t_point *a, t_point *b, t_img *img)
 {
@@ -18,14 +19,14 @@ void	__draw_a_line(t_point *a, t_point *b, t_img *img)
 		__swap_ab(a, b);
 	if (a->x <= b->x)
 	{
-		if (b->x - a->x > b->y - a->y)
+		if (__abs(b->x - a->x) > __abs(b->y - a->y))
 			__down_x(a, b, img);
 		else
 			__down_y(a, b, img);
 	}
 	else
 	{
-		if (b->x - a->x > b->y - a->y)
+		if (__abs(b->x - a->x) > __abs(b->y - a->y))
 			__up_x(a, b, img);
 		else
 			__up_y(a, b, img);
@@ -45,11 +46,11 @@ void	__down_x(t_point *a, t_point *b, t_img *img)
 	{
 		__my_mlx_pixel_put(img, a->x, a->y, a->color);
 		a->x += 1;
-		get_down -= diff_x;
+		get_down -= diff_y;
 		if (get_down <= 0)
 		{
 			a->y += 1;
-			get_down += diff_y;
+			get_down += diff_x;
 		}
 	}
 }

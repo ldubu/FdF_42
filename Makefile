@@ -2,7 +2,7 @@
 
 CC = 		gcc
 
-CFLAGS = -g -Wall -Werror -Wextra $(FSAN)
+CFLAGS = -g -Wall  -Wextra $(FSAN)
 FSAN = -fsanitize=address
 
 IFLAGS = 	-I includes -I libft_42/includes -I minilibx-linux

@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:14:43 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/03 16:26:51 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/08 14:47:37 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	main(int argc, char **argv)
 {
 	int		fd;
 	char	*line;
-	int		**lines;
-	int		size;
 	t_tab	tab;
 
 	if (argc != 2)
@@ -26,35 +24,40 @@ int	main(int argc, char **argv)
 	if (fd == -1)
 		return (1);
 	line = __get_next_line(fd);
-	lines = (int **) malloc(sizeof(int *) * 1);
-	lines[0] = __chartoint(__split(line, ' '), &tab);
-	size = 1;
+	tab.coordonnees = (int **) malloc(sizeof(int *) * 1);
+	tab.coordonnees[0] = __chartoint(__split(line, ' '), &tab);
+	tab.x_max = 0;
+	tab.y_max = 0;
+	tab.z_max = 0;
+	tab.z_min = 0;
 	while (line != NULL)
 	{
 		free(line);
 		line = __get_next_line(fd);
+		tab.y_max = tab.y_max + 1;
 		if (line != NULL)
-			lines = __tabjoin(lines, __split(line, ' '), size++, &tab);
+			tab.coordonnees = __tabjoin(__split(line, ' '), &tab);
 	}	
 	close(fd);
+	__draw(&tab);
 	return (0);
 }
 
 /*int x = 0;
 	int y;
-	while (lines[x] != NULL)
+	while (tab.coordonnees[x] != NULL)
 	{
 		y = 0;
 		while (y < tab.x_max)
 		{
-			printf("%2d ", lines[x][y]);
+			printf("%2d ", tab.coordonnees[x][y]);
 			y++;
 		}
 		printf("\n");
-		free(lines[x]);
+		free(tab.coordonnees[x]);
 		x++;
 	}
-	free(lines);*/
+	free(tab.coordonnees);*/
 int	*__chartoint(char **split, t_tab *tab)
 {
 	int	i;
@@ -68,6 +71,10 @@ int	*__chartoint(char **split, t_tab *tab)
 	while (split[i] != NULL)
 	{
 		line[i] = __atoi(split[i]);
+		if (line[i] < tab->z_min)
+			tab->z_min = line[i];
+		if (line[i] < tab->z_max)
+			tab->z_max = line[i];
 		i++;
 	}
 	i = 0;
@@ -78,26 +85,26 @@ int	*__chartoint(char **split, t_tab *tab)
 	}
 	free(split[i]);
 	free(split);
-	tab->x_max = i;
-	tab->y_max = tab->y_max + 1;
+	if (tab->x_max < i)
+		tab->x_max = i;
 	return (line);
 }
 
-int	**__tabjoin(int **lines, char **split, int size, t_tab *tab)
+int	**__tabjoin(char **split, t_tab *tab)
 {
 	int	i;
 	int	**new;
 
 	if (split == NULL)
-		return (lines);
+		return (tab->coordonnees);
 	i = 0;
-	new = (int **) malloc(sizeof(int *) * (size + 2));
-	while (i < size)
+	new = (int **) malloc(sizeof(int *) * (tab->y_max + 2));
+	while (i < tab->y_max)
 	{
-		new[i] = lines[i];
+		new[i] = tab->coordonnees[i];
 		i++;
 	}
-	free(lines);
+	free(tab->coordonnees);
 	new[i] = __chartoint(split, tab);
 	new[i + 1] = NULL;
 	return (new);
