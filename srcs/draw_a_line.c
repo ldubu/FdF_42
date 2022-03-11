@@ -6,14 +6,14 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:42:54 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/08 12:29:36 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/11 12:51:58 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 //printf("xa = %d, ya = %d, xb = %d, yb = %d\n", a->x, a->y, b->x, b->y);
 
-void	__draw_a_line(t_point *a, t_point *b, t_img *img)
+void	__draw_a_line(t_point *a, t_point *b, t_mlx *img)
 {
 	if (b->y < a->y)
 		__swap_ab(a, b);
@@ -33,7 +33,7 @@ void	__draw_a_line(t_point *a, t_point *b, t_img *img)
 	}
 }
 
-void	__down_x(t_point *a, t_point *b, t_img *img)
+void	__down_x(t_point *a, t_point *b, t_mlx *img)
 {
 	int	diff_y;
 	int	diff_x;
@@ -55,7 +55,7 @@ void	__down_x(t_point *a, t_point *b, t_img *img)
 	}
 }
 
-void	__down_y(t_point *a, t_point *b, t_img *img)
+void	__down_y(t_point *a, t_point *b, t_mlx *img)
 {
 	int	diff_y;
 	int	diff_x;
@@ -77,7 +77,7 @@ void	__down_y(t_point *a, t_point *b, t_img *img)
 	}
 }
 
-void	__up_x(t_point *a, t_point *b, t_img *img)
+void	__up_x(t_point *a, t_point *b, t_mlx *img)
 {
 	int	diff_y;
 	int	diff_x;
@@ -99,7 +99,7 @@ void	__up_x(t_point *a, t_point *b, t_img *img)
 	}
 }
 
-void	__up_y(t_point *a, t_point *b, t_img *img)
+void	__up_y(t_point *a, t_point *b, t_mlx *img)
 {
 	int	diff_y;
 	int	diff_x;

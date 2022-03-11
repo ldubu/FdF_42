@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:14:43 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/08 14:47:37 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/10 12:08:05 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ int	main(int argc, char **argv)
 	char	*line;
 	t_tab	tab;
 
+	tab.x_max = 0;
+	tab.y_max = 0;
+	tab.z_max = 0;
+	tab.z_min = 0;
 	if (argc != 2)
 		return (1);
 	fd = open(argv[1], O_RDONLY);
@@ -26,10 +30,7 @@ int	main(int argc, char **argv)
 	line = __get_next_line(fd);
 	tab.coordonnees = (int **) malloc(sizeof(int *) * 1);
 	tab.coordonnees[0] = __chartoint(__split(line, ' '), &tab);
-	tab.x_max = 0;
-	tab.y_max = 0;
-	tab.z_max = 0;
-	tab.z_min = 0;
+	
 	while (line != NULL)
 	{
 		free(line);
@@ -40,24 +41,23 @@ int	main(int argc, char **argv)
 	}	
 	close(fd);
 	__draw(&tab);
+	return (__free_tab(&tab));
+}
+
+int __free_tab(t_tab *tab)
+{
+	int x;
+
+	x = 0;
+	while (tab->coordonnees[x] != NULL)
+	{
+		free(tab->coordonnees[x]);
+		x++;
+	}
+	free(tab->coordonnees);
 	return (0);
 }
 
-/*int x = 0;
-	int y;
-	while (tab.coordonnees[x] != NULL)
-	{
-		y = 0;
-		while (y < tab.x_max)
-		{
-			printf("%2d ", tab.coordonnees[x][y]);
-			y++;
-		}
-		printf("\n");
-		free(tab.coordonnees[x]);
-		x++;
-	}
-	free(tab.coordonnees);*/
 int	*__chartoint(char **split, t_tab *tab)
 {
 	int	i;
@@ -73,7 +73,7 @@ int	*__chartoint(char **split, t_tab *tab)
 		line[i] = __atoi(split[i]);
 		if (line[i] < tab->z_min)
 			tab->z_min = line[i];
-		if (line[i] < tab->z_max)
+		if (line[i] > tab->z_max)
 			tab->z_max = line[i];
 		i++;
 	}
