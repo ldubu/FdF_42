@@ -2,6 +2,7 @@
 	"files.associations": {
 		"x.h": "c",
 		"keysym.h": "c",
-		"keysymdef.h": "c"
+		"keysymdef.h": "c",
+		"unistd.h": "c"
 	}
 }

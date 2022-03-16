@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:54:18 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/11 14:32:45 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/16 16:36:59 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,18 @@ int	__write_img(t_mlx *info)
 		x = 0;
 		a.z = info->tab->coordonnees[y][x];
 		__calculate_xy(&a, x, y, info);
-		a.color = __color(a.z, info->tab);
+		//a.color = __color(a.z, info->tab);
 		if (a.x > info->win_x || a.y > info->win_y)
 		{
 			y = info->tab->y_max;
 			x = info->tab->x_max;
 		}
-		while (x < info->tab->x_max - 1)// && x < info->win_x)
+		while (x < info->tab->x_max)// && x < info->win_x)
 		{
+			
 			a.z = info->tab->coordonnees[y][x];
-			a.color = __color(a.z, info->tab);
+			//a.color = __color(a.z, info->tab);
+			//printf("x = %d, y = %d\n        COLOR = %x\n", x, y, a.color);
 			//printf("color = %x\n", a.color);
 			__calculate_xy(&a, x, y, info);
 			//printf("A x = %d, y = %d, z = %d\n", x, y , info->tab->coordonnees[y][x]);
@@ -121,14 +123,18 @@ int	__write_img(t_mlx *info)
 				{
 					b.z = info->tab->coordonnees[y + 1][x];
 					//printf("By x = %d, y = %d, z = %d\n", x, y+1 , info->tab->coordonnees[y+1][x]);
+					//b.color = __color(b.z, info->tab);
 					__calculate_xy(&a, x, y, info);
 					__calculate_xy(&b, x, y + 1, info);
 					__draw_a_line(&a, &b, info);
 				}
-				if (x < info->tab->x_max - 2)
+				if (x < info->tab->x_max - 1)
 				{
+					a.z = info->tab->coordonnees[y][x];
+					__calculate_xy(&a, x, y, info);
 					b.z = info->tab->coordonnees[y][x + 1];
 					//printf("Bx x = %d, y = %d, z = %d x_max = %d\n", x+1, y , info->tab->coordonnees[y][x+1], info->tab->x_max);
+					//b.color = __color(b.z, info->tab);
 					__calculate_xy(&b, x + 1, y, info);
 					__draw_a_line(&a, &b, info);
 				}
@@ -153,17 +159,16 @@ int	__color(int z, t_tab *tab)
 	uint8_t blue;
 
 	z_diff = tab->z_max - tab->z_min;
-	z_diff = ((z_diff - (z_diff - z)) / z_diff);
+	z_diff = fabs((z_diff - (z_diff - z)) / z_diff);
 	red = 255 * z_diff;
-	green = 102 * z_diff;
-	blue = 102 + z_diff * 153;
-	printf("red = %d, green = %d, blue = %d z_diff = %f, z = %d\n", red, green, blue, z_diff, z);
+	green = 102 - 102 * z_diff;
+	blue = 255 - z_diff * 153;
+	//printf("red = %d, green = %d, blue = %d z_diff = %f, z = %d\n", red, green, blue, z_diff, z);
 	return ( red << 16 | green << 8 | blue);
 }
 
 void	__calculate_xy(t_point *point, int x, int y, t_mlx *info)
 {
-	//point->color = 0x0FFFFFF;
 	point->x = (((x * info->scale) - (y * info->scale)) * cos(info->angle)) \
 	+ info->shift_x;
 	point->y = ((((x * info->scale) + (y * info->scale)) \
@@ -218,12 +223,19 @@ void	__swap_ab(t_point *a, t_point *b)
 {
 	int	temp;
 
+	//printf("SWAP\n");
 	temp = a->x;
 	a->x = b->x;
 	b->x = temp;
 	temp = a->y;
 	a->y = b->y;
 	b->y = temp;
+	temp = a->z;
+	a->z = b->z;
+	b->z = temp;
+	temp = b->color;
+	b->color = a->color;
+	a->color = temp;
 }
 
 int	__abs(int x)
