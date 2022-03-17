@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:07:22 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/16 12:34:10 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/17 15:48:28 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ int		__expose(t_mlx *info);
 void	__init_image(t_mlx *info);
 int		__zoom(int button, int x, int y, t_mlx *info);
 int		__color(int z, t_tab *tab);
+void	__rotate(t_point *point, t_mlx *info);
 
 #endif

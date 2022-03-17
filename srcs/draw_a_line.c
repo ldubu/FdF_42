@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:42:54 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/16 16:40:14 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/17 15:45:25 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void	__up_y(t_point *a, t_point *b, t_mlx *img)
 		i++;
 		if (distance != 0 && i % distance == 0)
 		{
-			printf("distance = %d, i = %d, a = %d, b = %d\n", distance, i, a->z, b->z);
+			//printf("distance = %d, i = %d, a = %d, b = %d\n", distance, i, a->z, b->z);
 			b->z++;
 			if (b->z > a->z)
 				b->z = a->z;

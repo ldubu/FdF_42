@@ -1,19 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   graphical.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 15:54:18 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/17 16:34:35 by ldubuche         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../includes/fdf.h"
 
-#include "fdf.h"
-#include <math.h>
-
-int	__draw(t_tab *tab)
+int	main(void)
 {
 	t_mlx	info;
 	t_img	img;
@@ -76,17 +63,13 @@ int	__key_press(int keycode, t_mlx *info)
 	else if (keycode == XK_Left)
 		info->shift_x -= 30;
 	else if (keycode == XK_w)
-		info->beta += 0.05;
+		info->angle_y += 0.05;
 	else if (keycode == XK_s)
-		info->beta -= 0.05;
+		info->angle_y -= 0.05;
 	else if (keycode == XK_d)
-		info->alpha += 0.05;
+		info->angle_z += 0.05;
 	else if (keycode == XK_a)
-		info->alpha -= 0.05;
-	else if (keycode == XK_e)
-		info->omega += 0.05;
-	else if (keycode == XK_q)
-		info->omega -= 0.05;
+		info->angle_z -= 0.05;
 	else
 	{
 		printf("keycode = %x\n", keycode);
@@ -136,7 +119,6 @@ int	__write_img(t_mlx *info)
 			{
 				if (y < info->tab->y_max - 1)
 				{
-					a.z = info->tab->coordonnees[y][x];
 					b.z = info->tab->coordonnees[y + 1][x];
 					//printf("By x = %d, y = %d, z = %d\n", x, y+1 , info->tab->coordonnees[y+1][x]);
 					//b.color = __color(b.z, info->tab);
@@ -185,36 +167,50 @@ int	__color(int z, t_tab *tab)
 
 void	__calculate_xy(t_point *point, int x, int y, t_mlx *info)
 {
-	printf("x = %d, y = %d, z = %d\n", x, y, point->z);
 	point->x = x * info->scale;
 	point->y = y * info->scale;
 	point->z *= info->z_scale;
-	__rotate(point, info);
-	printf("----> x = %d, y = %d, z = %d\n", point->x, point->y, point->z);
-	point->x = (((point->x) - (point->y)) * cos(info->angle)) \
+	__rotate_x(point, info);
+	__rotate_y(point, info);
+	__rotate_z(point, info);
+	printf("x = %d, y = %d, z = %d\n", point->x, point->y, point->z);
+	point->x = (((x) - (y)) * cos(info->angle)) \
 	+ info->shift_x;
-	point->y = ((((point->x) + (point->y)) \
-	* sin(info->angle)) - point->z ) + info->shift_y;
+	point->y = ((((x) + (y)) \
+	* sin(info->angle)) - point->z) + info->shift_y;
 }
 
-void	__rotate(t_point *point, t_mlx *info)
+void	__rotate_x(t_point *point, t_mlx *info)
 {
 	int y;
 	int z;
+
+	y = point->y;
+	z = point->z;
+	point->y = y * cos(info->angle_x) - z * cos(info->angle_x);
+	point->z = z * cos(info->angle_x) + y * cos(info->angle_x);
+}
+
+void	__rotate_y(t_point *point, t_mlx *info)
+{
 	int x;
+	int z;
+
+	x = point->x;
+	z = point->z;
+	point->x = x * cos(info->angle_y) - z * cos(info->angle_y);
+	point->z = z * cos(info->angle_y) + x * cos(info->angle_y);
+}
+
+void	__rotate_z(t_point *point, t_mlx *info)
+{
+	int x;
+	int y;
 
 	x = point->x;
 	y = point->y;
-	z = point->z;
-	point->y = y * cos(info->beta) - z * sin(info->beta);
-	//point->z = z * cos(info->beta) + y * sin(info->beta);
-	z = point->z;
-	point->x = x * cos(info->alpha) - z * sin(info->alpha);
-	//point->z = z * cos(info->alpha) + x * sin(info->alpha);
-	x = point->x;
-	y = point->y;
-	point->x = x * cos(info->omega) - y * sin(info->omega);
-	point->y = y * cos(info->omega) + x * sin(info->omega);
+	point->x = x * cos(info->angle_z) - y * cos(info->angle_z);
+	point->y = y * cos(info->angle_z) + x * cos(info->angle_z);
 }
 
 int	__init_window(t_mlx *info, t_img *img, t_tab *tab)
@@ -229,9 +225,9 @@ int	__init_window(t_mlx *info, t_img *img, t_tab *tab)
 		info->z_scale += 4;
 	}*/
 	info->angle = 0.523599;
-	info->alpha = 0.0;
-	info->beta = 0.0;
-	info->omega = 0.0;
+	info->angle_x = 0.0;
+	info->angle_y = 0.0;
+	info->angle_z = 0.0;
 	info->redo = 0;
 	info->shift_x = info->win_x / 3;
 	info->shift_y = info->win_y / 3;
@@ -288,5 +284,3 @@ int	__abs(int x)
 		return (-x);
 	return (x);
 }
-
-//printf("xa = %d, xb = %d, ya = %d, yb = %d, get = %d, dif_y = %d, dif_x = %d\n", seg->xa, seg->xb, seg->ya, seg->yb, get_down, diff_y, diff_x);

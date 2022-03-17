@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:02:36 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/16 12:33:48 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/17 15:47:06 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ typedef struct s_data_mlx
 	int		shift_x;
 	int		shift_y;
 	float	angle;
+	float	alpha;
+	float	beta;
+	float	omega;
 }			t_mlx;
 
 typedef struct s_point
