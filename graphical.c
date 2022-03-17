@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:54:18 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/17 16:34:35 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/17 16:37:29 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ int	__write_img(t_mlx *info)
 					//b.color = __color(b.z, info->tab);
 					__calculate_xy(&a, x, y, info);
 					__calculate_xy(&b, x, y + 1, info);
+					a.z = info->tab->coordonnees[y][x];
+					b.z = info->tab->coordonnees[y + 1][x];
 					__draw_a_line(&a, &b, info);
 				}
 				if (x < info->tab->x_max - 1)
@@ -152,6 +154,8 @@ int	__write_img(t_mlx *info)
 					//printf("Bx x = %d, y = %d, z = %d x_max = %d\n", x+1, y , info->tab->coordonnees[y][x+1], info->tab->x_max);
 					//b.color = __color(b.z, info->tab);
 					__calculate_xy(&b, x + 1, y, info);
+					a.z = info->tab->coordonnees[y][x];
+					b.z = info->tab->coordonnees[y][x + 1];
 					__draw_a_line(&a, &b, info);
 				}
 				
