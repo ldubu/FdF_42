@@ -6,7 +6,7 @@
 /*   By: ldubuche <laura.dubuche@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:02:36 by ldubuche          #+#    #+#             */
-/*   Updated: 2022/03/17 15:47:06 by ldubuche         ###   ########.fr       */
+/*   Updated: 2022/03/21 15:47:43 by ldubuche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ typedef struct s_data_tab
 	int	**coordonnees;
 	int	x_max;
 	int	y_max;
-	int z_max;
-	int z_min;
+	int	z_max;
+	int	z_min;
 }		t_tab;
 
 typedef struct s_data_img
@@ -38,12 +38,13 @@ typedef struct s_data_mlx
 	t_img	*img;
 	t_tab	*tab;
 	int		redo;
-	float		scale;
-	float		z_scale;
+	float	scale;
+	float	z_scale;
 	int		win_x;
 	int		win_y;
 	int		shift_x;
 	int		shift_y;
+	int		projection;
 	float	angle;
 	float	alpha;
 	float	beta;
@@ -56,7 +57,13 @@ typedef struct s_point
 	int	y;
 	int	z;
 	int	color;
+	int	distance;
 }		t_point;
 
+typedef struct s_pair
+{
+	int	x;
+	int	y;
+}	t_pair;
 
 #endif
